@@ -99,8 +99,11 @@ def load_dim_facility(run_id):
         # result_type="expand" expands dictionary output into columns
         df = df.apply(gen_dimFacility, axis=1, result_type="expand")
 
+<<<<<<< HEAD
         
 
+=======
+>>>>>>> 430e410 (Initial commit)
         # Insert a surrogate key column named "Id" at position 0
         # Generates sequential values starting from 1
         df.insert(0, "Id", range(1, len(df) + 1)) 
@@ -117,7 +120,11 @@ def load_dim_facility(run_id):
         cursor = conn_tgt.cursor()
 
         # Replace NaN values with None (so SQL Server accepts NULL values)
+<<<<<<< HEAD
         
+=======
+        df = df.replace({np.nan: None})
+>>>>>>> 430e410 (Initial commit)
 
         # Create comma-separated column names for INSERT statement
         columns = ",".join(df.columns)
@@ -145,12 +152,17 @@ def load_dim_facility(run_id):
             try:
 
                 # Check if record already exists in target table using Id
+<<<<<<< HEAD
                 cursor.execute(f"SELECT COUNT(1) FROM DimFacility WHERE FacilityId = ?", (row['Id'],))
+=======
+                cursor.execute(f"SELECT COUNT(1) FROM {table_name} WHERE Id = ?", (row['Id'],))
+>>>>>>> 430e410 (Initial commit)
 
                 # If record does NOT exist
                 if cursor.fetchone()[0] == 0:
 
                     # Insert the row into target table
+<<<<<<< HEAD
                     cursor.execute(insert_sql, (
                         row['Id'],
                         row['FacilityId'],
@@ -165,6 +177,9 @@ def load_dim_facility(run_id):
                         row['UpdatedBy'],
                         row['UpdatedDate']
                         ))
+=======
+                    cursor.execute(insert_sql, tuple(row))
+>>>>>>> 430e410 (Initial commit)
 
                     # Increment inserted counter
                     rows_inserted += 1
@@ -206,7 +221,10 @@ def load_dim_facility(run_id):
         # Log overall ETL audit information
         log_audit(run_id, process_name,process_type, table_name, status, f"Failed: {rows_failed}", rows_inserted)
 
+<<<<<<< HEAD
         print(f"✅ {table_name} load finished. Success: {rows_inserted}, Failed: {rows_failed}")
+=======
+>>>>>>> 430e410 (Initial commit)
 
     # If any major error occurs in entire ETL process
     except Exception as e:

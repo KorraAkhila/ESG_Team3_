@@ -82,8 +82,14 @@ def load_dim_fuel_type(run_id):
         
         # Apply transformation function row-wise
         df = df.apply(gen_DimFuelType, axis=1, result_type="expand")
+<<<<<<< HEAD
         
         # Replace NaN values with None (SQL compatible)
+=======
+
+        # Replace NaN values with None (SQL compatible)
+        df = df.replace({np.nan: None})
+>>>>>>> 430e410 (Initial commit)
 
 
         # ==================================================
@@ -123,6 +129,7 @@ def load_dim_fuel_type(run_id):
 
                 # If record does not exist → Insert
                 if cursor.fetchone()[0] == 0:
+<<<<<<< HEAD
                     cursor.execute(insert_sql, (
                         row['Id'],
                         row['FuelTypeId'],
@@ -136,6 +143,9 @@ def load_dim_fuel_type(run_id):
                         row['UpdatedBy'],
                         row['UpdatedDate']
                     ))
+=======
+                    cursor.execute(insert_sql, tuple(row))
+>>>>>>> 430e410 (Initial commit)
                     rows_inserted += 1
                 else:
                     # If record exists → Skip

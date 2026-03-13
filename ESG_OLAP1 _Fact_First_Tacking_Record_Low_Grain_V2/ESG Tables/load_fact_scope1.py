@@ -27,7 +27,11 @@ FactScope1Emissions = """
         -- Select minimum ID to act as SourceId
         SELECT 
     --MIN(se.id) AS Id,
+<<<<<<< HEAD
     --ROW_NUMBER() OVER (ORDER BY se.facility_id) AS Id,
+=======
+    ROW_NUMBER() OVER (ORDER BY se.facility_id) AS Id,
+>>>>>>> 430e410 (Initial commit)
 
     -- Get Facility foreign key
     se.facility_id AS DimFacilityId,
@@ -133,10 +137,15 @@ def load_fact_scope1(run_id):
     df = pd.read_sql(FactScope1Emissions, conn_src)
     conn_src.close() 
 
+<<<<<<< HEAD
     
 
     df["CreatedBy"] = CONFIG["system_user"]
     
+=======
+    df = df.rename(columns={'Id': 'SourceId'})
+    df = df.replace({np.nan: None})
+>>>>>>> 430e410 (Initial commit)
     total_records = len(df)
 
     # 2. PREPARE TARGET & CACHE DIMENSIONS
@@ -144,8 +153,13 @@ def load_fact_scope1(run_id):
     cursor = conn_tgt.cursor()
 
     print("🧠 Caching dimension keys for speed...")
+<<<<<<< HEAD
     # Cache existing Ids to skip duplicates
     cursor.execute(f"SELECT Id FROM {table_name}")
+=======
+    # Cache existing SourceIds to skip duplicates
+    cursor.execute(f"SELECT SourceId FROM {table_name}")
+>>>>>>> 430e410 (Initial commit)
     existing_source_ids = {row[0] for row in cursor.fetchall()}
 
     # Cache dimension keys (Adjust column names to match your DW schema)
@@ -166,6 +180,7 @@ def load_fact_scope1(run_id):
     rows_skipped = 0
     rows_failed = 0
 
+<<<<<<< HEAD
     cursor.execute("SELECT DimFacilityId, DimEmissionTypeId, DimFuelTypeId, TimeKey FROM FactScope1Emissions")
     # Store them as a set of tuples
     # Convert each pyodbc.Row object into a standard Python tuple
@@ -190,26 +205,53 @@ def load_fact_scope1(run_id):
                 cache_facility.add(row['DimFacilityId']) 
 
             # Emission Type check
+=======
+    for index, row in df.iterrows():
+        current_row = index + 1
+        
+        try:
+            # A. PREVENT DUPLICATE RECORDS (Using Local Set)
+            if row['SourceId'] in existing_source_ids:
+                rows_skipped += 1
+                continue
+
+            # B. VALIDATE FOREIGN KEYS (Only call DB if NOT in cache)
+            if row['DimFacilityId'] not in cache_facility:
+                smart_dim_load(cursor, "DimFacility", "FacilityId", row['DimFacilityId'], load_dim_facility, run_id)
+                cache_facility.add(row['DimFacilityId']) # Update cache
+
+>>>>>>> 430e410 (Initial commit)
             if row['DimEmissionTypeId'] not in cache_emission:
                 smart_dim_load(cursor, "DimEmissionType", "EmissionTypeId", row['DimEmissionTypeId'], load_dim_emission_type, run_id)
                 cache_emission.add(row['DimEmissionTypeId'])
 
+<<<<<<< HEAD
             # Fuel Type check
+=======
+>>>>>>> 430e410 (Initial commit)
             if row['DimFuelTypeId'] not in cache_fuel:
                 smart_dim_load(cursor, "DimFuelType", "FuelTypeId", row['DimFuelTypeId'], load_dim_fuel_type, run_id)
                 cache_fuel.add(row['DimFuelTypeId'])
 
+<<<<<<< HEAD
             # Time check
+=======
+>>>>>>> 430e410 (Initial commit)
             if row['TimeKey'] not in cache_time:
                 smart_dim_load(cursor, "DimTimeperiod", "TimeKey", row['TimeKey'], load_dim_timeperiod, run_id)
                 cache_time.add(row['TimeKey'])
 
+<<<<<<< HEAD
             # B. INSERT FACT RECORD
             # Ensure df.columns matches the target table exactly (excluding 'Id')
+=======
+            # C. INSERT FACT RECORD
+>>>>>>> 430e410 (Initial commit)
             columns = ",".join(df.columns)
             placeholders = ",".join(["?"] * len(df.columns))
             insert_sql = f"INSERT INTO {table_name} ({columns}) VALUES ({placeholders})"
             
+<<<<<<< HEAD
             
             cursor.execute(insert_sql, (
                 row['DimFacilityId'],
@@ -224,12 +266,23 @@ def load_fact_scope1(run_id):
             rows_inserted += 1
             
             # Batch Commit
+=======
+            cursor.execute(insert_sql, tuple(row))
+            rows_inserted += 1
+            
+            # Commit in batches for performance
+>>>>>>> 430e410 (Initial commit)
             if rows_inserted % 100 == 0:
                 conn_tgt.commit()
 
         except Exception as row_error:
             rows_failed += 1
+<<<<<<< HEAD
             log_row_error(run_id, process_name, table_name, row.to_dict(), str(row_error))
+=======
+            log_row_error(run_id, process_name, process_type, table_name, row.to_dict(), str(row_error))
+
+>>>>>>> 430e410 (Initial commit)
     # 4. FINALIZATION
    
     # ... rest of your logging logic ...

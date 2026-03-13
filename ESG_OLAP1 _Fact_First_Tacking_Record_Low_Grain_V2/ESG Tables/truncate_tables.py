@@ -8,7 +8,11 @@ FACT_TABLES = [
 
 DIM_TABLES = [
     "DimFacility",
+<<<<<<< HEAD
     "DimEmissionType",
+=======
+    "DimEmissionSource",
+>>>>>>> 430e410 (Initial commit)
     "DimFuelType",
     "DimTimeperiod"
 ]

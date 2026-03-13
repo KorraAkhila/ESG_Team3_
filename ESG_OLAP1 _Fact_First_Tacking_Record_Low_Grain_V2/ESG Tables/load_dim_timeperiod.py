@@ -91,9 +91,15 @@ def load_dim_timeperiod(run_id):
         # axis=1 means apply to each row
         # result_type="expand" converts dictionary output into columns
         df = df.apply(gen_DimTimeperiod, axis=1, result_type="expand")
+<<<<<<< HEAD
         
 
         # Replace NaN values with None so SQL Server accepts them as NULL
+=======
+
+        # Replace NaN values with None so SQL Server accepts them as NULL
+        df = df.replace({np.nan: None})
+>>>>>>> 430e410 (Initial commit)
 
 
         # -----------------------------
@@ -140,6 +146,7 @@ def load_dim_timeperiod(run_id):
                 if cursor.fetchone()[0] == 0:
 
                     # Insert row into target table
+<<<<<<< HEAD
                     cursor.execute(insert_sql, (
                         row['TimeKey'],
                         row['PeriodStartDate'],
@@ -153,6 +160,9 @@ def load_dim_timeperiod(run_id):
                         row['UpdatedBy'],
                         row['UpdatedDate']
                             ))
+=======
+                    cursor.execute(insert_sql, tuple(row))
+>>>>>>> 430e410 (Initial commit)
 
                     # Increment inserted counter
                     rows_inserted += 1
@@ -168,7 +178,11 @@ def load_dim_timeperiod(run_id):
                 rows_failed += 1
 
                 # Log row-level error into database table
+<<<<<<< HEAD
                 log_row_error(run_id, process_name, table_name, row.to_dict(), str(row_err))
+=======
+                log_row_error(run_id, process_name,process_type, table_name, row.to_dict(), str(row_err))
+>>>>>>> 430e410 (Initial commit)
 
                 # Print warning message with row index and TimeKey
                 print(f"⚠️ Row {index+1} (TimeKey: {row['TimeKey']}) failed: {row_err}")

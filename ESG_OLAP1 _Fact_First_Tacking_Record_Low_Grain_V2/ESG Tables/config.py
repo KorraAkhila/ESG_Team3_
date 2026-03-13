@@ -1,7 +1,10 @@
 from datetime import date
 
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> 430e410 (Initial commit)
 CONFIG = {
 
 

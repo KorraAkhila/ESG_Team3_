@@ -24,6 +24,7 @@ from config import CONFIG
 # ==========================================================
 
 DimEmissionSource = """
+<<<<<<< HEAD
     
 
 SELECT DISTINCT
@@ -31,6 +32,15 @@ SELECT DISTINCT
         et.name AS EmissionTypeName
     FROM emission_equipment_type  et
    where et.is_active=1
+=======
+    SELECT DISTINCT
+        et.id   AS EmissionTypeId,
+        et.name AS EmissionTypeName
+    FROM emission_source es
+    JOIN emission_equipment_type et
+        ON et.id = es.equipment_type_id
+    WHERE es.is_active = 'True'
+>>>>>>> 430e410 (Initial commit)
 """
 
 
@@ -74,10 +84,16 @@ def load_dim_emission_type(run_id):
         
         # Apply transformation function row-wise
         df = df.apply(gen_DimEmissionType, axis=1, result_type="expand")
+<<<<<<< HEAD
         
 
         # Add surrogate key column (Id)
         # df.insert(0, "Id", range(1, len(df) + 1))
+=======
+
+        # Add surrogate key column (Id)
+        df.insert(0, "Id", range(1, len(df) + 1))
+>>>>>>> 430e410 (Initial commit)
 
 
         # ==================================================
@@ -89,7 +105,11 @@ def load_dim_emission_type(run_id):
         cursor = conn_tgt.cursor()
 
         # Replace NaN values with None (SQL compatible NULL)
+<<<<<<< HEAD
         
+=======
+        df = df.replace({np.nan: None})
+>>>>>>> 430e410 (Initial commit)
 
         # Dynamically prepare INSERT statement
         columns = ",".join(df.columns)
@@ -112,12 +132,18 @@ def load_dim_emission_type(run_id):
 
                 # Duplicate check based on surrogate key (Id)
                 cursor.execute(
+<<<<<<< HEAD
                     f"SELECT COUNT(1) FROM {table_name} WHERE EmissionTypeId = ?",
                     (row['EmissionTypeId'],)
+=======
+                    f"SELECT COUNT(1) FROM {table_name} WHERE Id = ?",
+                    (row['Id'],)
+>>>>>>> 430e410 (Initial commit)
                 )
 
                 # If record does not exist → Insert
                 if cursor.fetchone()[0] == 0:
+<<<<<<< HEAD
                     cursor.execute(insert_sql, (
                         row['EmissionTypeId'],
                         row['EmissionTypeName'],
@@ -126,6 +152,9 @@ def load_dim_emission_type(run_id):
                         row['UpdatedBy'],
                         row['UpdatedDate']
                     ))
+=======
+                    cursor.execute(insert_sql, tuple(row))
+>>>>>>> 430e410 (Initial commit)
                     rows_inserted += 1
                 else:
                     # If record exists → Skip
@@ -144,7 +173,11 @@ def load_dim_emission_type(run_id):
                 log_row_error(
                     run_id,
                     process_name,
+<<<<<<< HEAD
                     
+=======
+                    process_type,
+>>>>>>> 430e410 (Initial commit)
                     table_name,
                     row.to_dict(),
                     str(row_err)

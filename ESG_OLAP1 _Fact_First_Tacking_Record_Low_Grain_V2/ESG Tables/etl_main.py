@@ -38,7 +38,10 @@ if __name__ == "__main__":
     # ===============================
 
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 430e410 (Initial commit)
     # Load Scope 1 Emissions fact table
     # Uses dimension keys already loaded above
     load_fact_scope1(RUN_ID)
@@ -54,6 +57,7 @@ if __name__ == "__main__":
     # Because fact table depends on dimension keys (Foreign Keys)
 
 
+<<<<<<< HEAD
     # # Load Facility dimension
     # load_dim_facility(RUN_ID)
     
@@ -67,6 +71,21 @@ if __name__ == "__main__":
 
     # # Load Time dimension
     # load_dim_timeperiod(RUN_ID)
+=======
+    # Load Facility dimension
+    load_dim_facility(RUN_ID)
+    
+    # Load Emission Source dimension
+    load_dim_emission_type(RUN_ID)
+   
+
+    # Load Fuel Type dimension
+    load_dim_fuel_type(RUN_ID)
+    
+
+    # Load Time dimension
+    load_dim_timeperiod(RUN_ID)
+>>>>>>> 430e410 (Initial commit)
     
 
 
