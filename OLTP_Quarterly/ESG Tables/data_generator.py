@@ -415,12 +415,8 @@ def main():
 
     for facility_id, sources in sources_by_facility.items():
 
-        # Each facility gets all available complete quarters
-        # (partial current quarter is excluded for clean OLAP data)
-        facility_quarters = [
-            q for q in all_quarters
-            if len(quarters_map[q]) == 3    # only fully completed quarters (3 months)
-        ]
+        # All quarters including the current partial quarter (e.g. Jan & Feb of Q1 2026)
+        facility_quarters = all_quarters
 
         for (year, quarter) in facility_quarters:
             quarter_periods = quarters_map[(year, quarter)]   # up to 3 months
