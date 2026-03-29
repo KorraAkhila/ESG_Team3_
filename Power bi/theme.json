@@ -1,0 +1,127 @@
+{
+"name": "Techwish ESG Clean Layout (Validated)",
+"background": "#F4F6F3",
+"foreground": "#2F3E2F",
+"tableAccent": "#5E7D5E",
+
+"dataColors": [
+"#5E7D5E",
+"#7FA37F",
+"#A7C4A0",
+"#D6E4D0",
+"#3E5C3E"
+],
+
+"visualStyles": {
+
+
+"*": {
+  "*": {
+    "background": [
+      {
+        "color": { "solid": { "color": "#FFFFFF" } },
+        "transparency": 0
+      }
+    ],
+    "border": [
+      {
+        "show": true,
+        "color": { "solid": { "color": "#D0D5D0" } }
+      }
+    ]
+  }
+},
+
+"card": {
+  "*": {
+    "labels": [
+      {
+        "fontSize": 20,
+        "color": { "solid": { "color": "#2F3E2F" } }
+      }
+    ],
+    "categoryLabels": [
+      {
+        "fontSize": 12,
+        "color": { "solid": { "color": "#5E7D5E" } }
+      }
+    ]
+  }
+},
+
+"slicer": {
+  "*": {
+    "items": [
+      {
+        "fontSize": 12,
+        "color": { "solid": { "color": "#2F3E2F" } }
+      }
+    ],
+    "header": [
+      {
+        "fontSize": 13,
+        "color": { "solid": { "color": "#2F3E2F" } }
+      }
+    ]
+  }
+},
+
+"tableEx": {
+  "*": {
+    "grid": [
+      {
+        "rowPadding": 10
+      }
+    ],
+    "columnHeaders": [
+      {
+        "fontSize": 13,
+        "color": { "solid": { "color": "#2F3E2F" } }
+      }
+    ],
+    "values": [
+      {
+        "fontSize": 12,
+        "color": { "solid": { "color": "#2F3E2F" } }
+      }
+    ]
+  }
+},
+
+"clusteredBarChart": {
+  "*": {
+    "categoryAxis": [
+      {
+        "labelColor": { "solid": { "color": "#2F3E2F" } },
+        "fontSize": 12
+      }
+    ],
+    "valueAxis": [
+      {
+        "labelColor": { "solid": { "color": "#2F3E2F" } },
+        "fontSize": 12
+      }
+    ]
+  }
+},
+
+"donutChart": {
+  "*": {
+    "labels": [
+      {
+        "color": { "solid": { "color": "#2F3E2F" } },
+        "fontSize": 11
+      }
+    ],
+    "legend": [
+      {
+        "labelColor": { "solid": { "color": "#2F3E2F" } },
+        "fontSize": 11
+      }
+    ]
+  }
+}
+
+
+}
+}
